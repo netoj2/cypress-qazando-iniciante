@@ -16,7 +16,7 @@ jobs:
         steps:
             # clone do projeto
             - name: Checkout/Clone do projeto
-              uses: actions/checkout@v4
+              uses: actions/checkout@v3
 
             # Para colocar pra instalar qualquer coisa, só dar o "run" que ele faz. (faz isso quando não tem action pronta)
             - name: Instalar dependencias do projeto
@@ -24,8 +24,15 @@ jobs:
             
             # execução e config do projeto
             - name: Run testes
-              uses: cypress-io/github-action@v6
+              uses: cypress-io/github-action@v5
               with: 
-                 record: true
+                record: true
               env:
-                 CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+                CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+            
+            # upload do relatorio do mocha
+            - name: upload relatório
+              uses: actions/upload-artifact@v3
+              with:
+                name: Relatório
+                path: cypress\reports\html
