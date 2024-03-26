@@ -1,0 +1,38 @@
+# Nome da Pipeline
+name: Run basic testes - Scheduler
+
+# Momento em que será executado
+on:
+  schedule:
+    - cron: "0 20 * * 1-5"  #Pesquisar por: Events that trigger workflows no google, pra entender os tempos
+
+jobs:
+    # O que vai ser feito nessa pipe (Nesse caso só tem 1, que é rodar o teste)
+    cypress-run:
+        # Máquina que será executado
+        runs-on: ubuntu-latest
+
+        # Passo a passo para rodar os testes
+        steps:
+            # clone do projeto
+            - name: Checkout/Clone do projeto
+              uses: actions/checkout@v3
+
+            # Para colocar pra instalar qualquer coisa, só dar o "run" que ele faz. (faz isso quando não tem action pronta)
+            - name: Instalar dependencias do projeto
+              run: npm install
+            
+            # execução e config do projeto
+            - name: Run testes
+              uses: cypress-io/github-action@v5
+              with: 
+                record: true
+              env:
+                CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+            
+            # upload do relatorio do mocha
+            - name: upload relatório
+              uses: actions/upload-artifact@v3
+              with:
+                name: Relatório
+                path: cypress\reports\html
