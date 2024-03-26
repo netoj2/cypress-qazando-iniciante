@@ -11,6 +11,7 @@ export default{
     //         expect(element.text()).equal("O campo nome deve ser prenchido")
     //     })
     // }
+    //
 
     validarMensagemErro(mensagem){
         cy.get(".errorLabel").should("be.visible").should("have.text", mensagem)
